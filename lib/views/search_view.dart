@@ -11,43 +11,43 @@ class SearchView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GetWeatherCubit, WeatherState>(
       builder: (context, state) {
-        final appBarColor = AppThemeHelper.getAppBarColor(state);
+        final themeColor = AppThemeHelper.getAppBarColor(state);
 
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
             title: const Text('Search A City'),
             elevation: 4,
-            backgroundColor: appBarColor,
+            backgroundColor: themeColor,
           ),
           body: Padding(
             padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
             child: Center(
               child: TextField(
-                cursorColor: Colors.black,
+                cursorColor: themeColor,
                 onSubmitted: (value) async {
                   final getWeatherCubit =
                       BlocProvider.of<GetWeatherCubit>(context);
                   getWeatherCubit.getWeather(cityName: value);
                   Navigator.pop(context);
                 },
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsetsDirectional.symmetric(
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsetsDirectional.symmetric(
                     horizontal: 16,
                     vertical: 28,
                   ),
                   hintText: 'Enter City Name',
-                  label: Text(
+                  label: const Text(
                     'Search',
                     style: TextStyle(color: Colors.black),
                   ),
-                  suffixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
+                  suffixIcon: const Icon(Icons.search),
+                  border: const OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: BorderSide(color: themeColor),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 2),
+                    borderSide: BorderSide(color: themeColor, width: 2),
                   ),
                 ),
               ),

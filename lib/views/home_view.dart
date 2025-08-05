@@ -4,7 +4,8 @@ import 'package:weather_app/cubits/git_weather_cubit/get_weather_cubit.dart';
 import 'package:weather_app/cubits/git_weather_cubit/get_weather_states.dart';
 import 'package:weather_app/views/helpers/app_theme_helper.dart';
 import 'package:weather_app/views/search_view.dart';
-import 'package:weather_app/widget/home_body.dart';
+import 'package:weather_app/widget/no_weather_body.dart';
+import 'package:weather_app/widget/weather_info_body.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -13,11 +14,11 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GetWeatherCubit, WeatherState>(
       builder: (context, state) {
-        final appBarColor = AppThemeHelper.getAppBarColor(state);
+        final themeColor = AppThemeHelper.getAppBarColor(state);
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            backgroundColor: appBarColor,
+            backgroundColor: themeColor,
             elevation: 4,
             actions: [
               IconButton(
@@ -36,7 +37,20 @@ class HomeView extends StatelessWidget {
               style: TextStyle(color: Colors.black),
             ),
           ),
-          body: const HomeBody(),
+          body: BlocBuilder<GetWeatherCubit, WeatherState>(
+            builder: (context, state) {
+              if (state is WeatherLoading) {
+                return const Center(
+                    child: CircularProgressIndicator(color: Colors.black));
+              } else if (state is WeatherSuccessState) {
+                return WeatherInfoBody(weather: state.weatherModel);
+              } else if (state is WeatherFailureState) {
+                return const Center(child: Text('Oops, there was an error.'));
+              } else {
+                return const NoWeatherBody();
+              }
+            },
+          ),
         );
       },
     );
